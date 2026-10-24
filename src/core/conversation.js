@@ -1,5 +1,11 @@
 class Conversation {
   constructor({ agents, memoryStore, topic, maxTurns = 9 }) {
+    if (!Array.isArray(agents) || agents.length === 0) {
+      throw new RangeError('Conversation requires at least one agent.');
+    }
+    if (!Number.isSafeInteger(maxTurns) || maxTurns < 0) {
+      throw new RangeError('maxTurns must be a non-negative safe integer.');
+    }
     this.agents = agents;
     this.memoryStore = memoryStore;
     this.topic = topic;
