@@ -5,6 +5,8 @@ The Agora Terrarium keeps the simulation intentionally simple so you can reshape
 ## Event Loop
 - `Conversation` orchestrates the round-robin loop. Each tick picks the next agent and records the new message in the shared `MemoryStore`.
 - The total number of turns is capped by `MAX_TURNS` to avoid runaway logs during experimentation.
+- Construction requires a non-empty array of agents and a non-negative safe integer `maxTurns`. Invalid values throw `RangeError` before running; `maxTurns: 0` returns an empty transcript. In particular, `Infinity`, `NaN`, negative/fractional values and numeric strings are rejected rather than silently running or coercing.
+- `src/index.js` converts the `MAX_TURNS` environment setting with `Number(...)`; invalid settings therefore fail fast when a `Conversation` is constructed. The interface does not yet enforce a small operational maximum, so operators should still choose bounded values.
 
 ## Agents
 - Agents are constructed via `buildAgents` in `src/config/agents.js` and share the same interface (`generate(memoryStore, topic)`).
