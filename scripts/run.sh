@@ -2,10 +2,8 @@
 set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
-
-if [ -f "$ROOT_DIR/.env" ]; then
-  export $(grep -Ev '^#' "$ROOT_DIR/.env" | xargs)
-fi
-
 cd "$ROOT_DIR"
-node src/index.js
+
+# src/index.js loads .env through dotenv, including values with spaces.
+# Avoid shell word-splitting and evaluating configuration as shell code.
+exec node src/index.js
